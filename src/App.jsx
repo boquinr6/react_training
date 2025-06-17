@@ -6,6 +6,10 @@ import './components/MyComponent.jsx'
 import MyComponent from './components/MyComponent.jsx'
 import MyButton from './components/MyButton.jsx'
 import MyCard from './components/MyCard.jsx'
+import ProductDisplay from './components/ProductDisplay.jsx'
+import ThemeToggler from './components/ThemeToggler.jsx'
+import { useTheme } from './contexts/ThemeContext.jsx';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -41,9 +45,12 @@ function App() {
     )
   )}
 
+  const { theme, toggleTheme } = useTheme(); 
+
   return (
     <>
-      <div>
+      <div className={`app ${theme}`}> {/* Example: apply theme class to root div */}
+        <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -107,6 +114,14 @@ function App() {
         }
         } />
       </div>
+      <ProductDisplay productId={1} />
+        {/* New component to consume the theme context */}
+        <hr />
+        <h2>Context API (Theme)</h2>
+        <ThemeToggler /> {/* This component will consume the context */}
+      </div>
+      
+      
     </>
   )
 }
