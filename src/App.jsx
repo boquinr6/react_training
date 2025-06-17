@@ -9,6 +9,37 @@ import MyCard from './components/MyCard.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
+  // example of using useState to manage a user object
+  const [user, setUser] = useState({
+    name: 'John Doe',
+    age: 30,
+    email: ''
+  });
+
+  const updateAge = (newAge) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      age: newAge
+    }));
+  };
+
+  // example of using useState to manage a to-do list
+  const [toDoList, setTodoList] = useState([
+    { id: 1, task: 'Learn React', completed: false },
+    { id: 2, task: 'Build a project', completed: false },
+    { id: 3, task: 'Deploy to production', completed: false }
+  ]);
+  const addTodo = (task) => {
+    setTodoList( (prevList) => [
+      ...prevList,
+      {id: prevList.length + 1, task: task, completed: false}
+    ])
+  }
+  const toggleTodo = (id) => {
+    setTodoList( (prevList) => prevList.map(
+      todo => todo.id === id ? {...todo, completed: !todo.completed} : todo
+    )
+  )}
 
   return (
     <>
@@ -47,6 +78,34 @@ function App() {
           {/* Content for children (default slot) */}
           <p>This is the card body content.</p>
         </MyCard>
+
+        <input
+          type="text"
+          placeholder="Enter new age"
+          onChange={(e) => updateAge(e.target.value)}
+        />
+        <p> User information: {Object.entries(user).map(([k,v]) => `${k}: ${v}`).join(', ')} </p>
+
+        <h2>To-Do List</h2>
+        <ul>
+          {toDoList.map(todo => (
+            <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} >
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+              {todo.task}
+            </li>
+          ))}
+        </ul>
+        <input type="text" placeholder="Add a new task" onKeyDown={(e) => {
+          if (e.key === 'Enter' && e.target.value.trim() !== '') {
+            addTodo(e.target.value);
+            e.target.value = ''; // Clear input after adding
+          }
+        }
+        } />
       </div>
     </>
   )

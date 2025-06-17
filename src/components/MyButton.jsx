@@ -11,8 +11,6 @@ function MyButton(props) {
     };
 
     const showChildren = () => {
-        console.log("Button state:", buttonOn); // Log the current state
-        console.log("Children:", props.children); // Log the children prop
         if (buttonOn) {
             return props.children; // Return children if button is on
         }
