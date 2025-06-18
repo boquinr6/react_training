@@ -10,9 +10,18 @@ import ProductDisplay from './components/ProductDisplay.jsx'
 import ThemeToggler from './components/ThemeToggler.jsx'
 import { useTheme } from './contexts/ThemeContext.jsx';
 
+// Import Redux hooks and actions
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, incrementByAmount } from './store/counterSlice.js'; // Adjust path if needed
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
+  // Select the 'value' from the 'counter' slice of the Redux store
+  const globalCount = useSelector((state) => state.counter.value); // <--- Use useSelector
+  // Get the dispatch function from the Redux store
+  const dispatch = useDispatch(); // <--- Use useDispatch
+
   // example of using useState to manage a user object
   const [user, setUser] = useState({
     name: 'John Doe',
@@ -60,8 +69,14 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={() => dispatch(increment())}> {/* <--- Dispatch increment action */}
+          count is {globalCount}
+        </button>
+        <button onClick={() => dispatch(decrement())} style={{ marginLeft: '10px' }}>
+          Decrement
+        </button>
+        <button onClick={() => dispatch(incrementByAmount(5))} style={{ marginLeft: '10px' }}>
+          Add 5
         </button>
         <MyComponent />
         <p>
